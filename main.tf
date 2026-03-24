@@ -35,7 +35,7 @@ module "eks" {
   cluster_sg_id      = module.security_group.cluster_sg_id
   node_sg_id         = module.security_group.node_sg_id
   node_instance_type = var.node_instance_type
-  eks_admin_arn = module.iam.eks_admin_arn
+  eks_admin_arn      = module.iam.eks_admin_arn
   name_prefix        = local.name_prefix
   common_tags        = local.common_tags
 }

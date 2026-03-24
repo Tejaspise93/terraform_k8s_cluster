@@ -19,6 +19,11 @@ resource "aws_eks_cluster" "main" {
   })
 }
 
+resource "time_sleep" "wait_for_aws_auth" {
+  depends_on      = [aws_eks_node_group.main]
+  create_duration = "30s"
+}
+
 resource "kubernetes_config_map_v1_data" "aws_auth" {
   metadata {
     name      = "aws-auth"
@@ -44,5 +49,5 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
 
   force = true
 
-  depends_on = [aws_eks_cluster.main]
+  depends_on = [time_sleep.wait_for_aws_auth]
 }
