@@ -43,6 +43,12 @@ variable "kubernetes_version" {
   }
 }
 
+variable "node_instance_type" {
+  type        = string
+  default     = "t3.micro"
+  description = "EC2 instance type for EKS worker nodes"
+}
+
 variable "vpc_cidr" {
   type        = string
   default     = "10.0.0.0/16"
