@@ -1,0 +1,6 @@
+region             = "us-east-1"
+project            = "myapp"
+environment        = "dev"
+cluster_name       = "eks-cluster"
+kubernetes_version = "1.29"
+vpc_cidr           = "10.0.0.0/16"

@@ -1,0 +1,7 @@
+my_dir
+.terraform/
+*.tfstate
+*.tfstate.backup
+crash.log
+tfplan
+.terraform.tfvars
