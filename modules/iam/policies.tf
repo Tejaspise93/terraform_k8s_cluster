@@ -40,3 +40,27 @@ resource "aws_iam_user_policy_attachment" "eks_admin_iam_read" {
   user       = aws_iam_user.eks_admin.name
   policy_arn = "arn:aws:iam::aws:policy/IAMReadOnlyAccess"
 }
+
+# inline policy for bastion host
+          # "eks:DescribeCluster",
+          # "eks:ListClusters",
+          # "eks:AccessKubernetesApi"
+resource "aws_iam_user_policy" "eks_admin_inline" {
+  name = "${var.name_prefix}-eks-admin-inline"
+  user = aws_iam_user.eks_admin.name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "eks:DescribeCluster",
+          "eks:ListClusters",
+          "eks:AccessKubernetesApi"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}

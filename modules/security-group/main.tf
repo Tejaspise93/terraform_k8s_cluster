@@ -120,3 +120,13 @@ resource "aws_security_group_rule" "alb_egress_nodes" {
   source_security_group_id = aws_security_group.node.id
   description              = "All traffic to nodes"
 }
+
+resource "aws_security_group_rule" "cluster_ingress_bastion_https" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  security_group_id = aws_security_group.cluster.id
+  cidr_blocks       = ["10.0.0.0/16"]
+  description       = "HTTPS from VPC for bastion kubectl access"
+}
