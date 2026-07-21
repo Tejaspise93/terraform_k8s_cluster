@@ -42,9 +42,9 @@ resource "aws_iam_user_policy_attachment" "eks_admin_iam_read" {
 }
 
 # inline policy for bastion host
-          # "eks:DescribeCluster",
-          # "eks:ListClusters",
-          # "eks:AccessKubernetesApi"
+# "eks:DescribeCluster",
+# "eks:ListClusters",
+# "eks:AccessKubernetesApi"
 resource "aws_iam_user_policy" "eks_admin_inline" {
   name = "${var.name_prefix}-eks-admin-inline"
   user = aws_iam_user.eks_admin.name

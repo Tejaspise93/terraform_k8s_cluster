@@ -53,3 +53,8 @@ variable "common_tags" {
   type        = map(string)
   description = "Common tags applied to all resources"
 }
+
+variable "eks_public_access_cidrs" {
+  type        = list(string)
+  description = "List of CIDR blocks allowed to access the EKS public API server"
+}

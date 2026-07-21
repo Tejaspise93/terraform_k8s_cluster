@@ -54,3 +54,8 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
   description = "CIDR block for the VPC"
 }
+
+variable "eks_public_access_cidrs" {
+  type        = list(string)
+  description = "List of CIDR blocks allowed to access the EKS public API server"
+}

@@ -10,7 +10,7 @@ output "cluster_name" {
 
 output "kubeconfig_command" {
   description = "Run this command to configure kubectl"
-  value       = "aws eks update-kubeconfig --region ${var.region} --name ${module.eks.cluster_name}"
+  value       = "aws eks update-kubeconfig --region ${var.region} --name ${module.eks.cluster_name} --profile eks-admin"
 }
 
 output "node_group_arn" {

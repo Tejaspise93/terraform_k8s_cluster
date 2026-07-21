@@ -33,7 +33,7 @@ Before deploying, create the following AWS resources manually:
 ## Deploy
 ```bash
 terraform init
-terraform workspace new dev
+terraform workspace new dev  # only on first run
 terraform workspace select dev
 terraform plan -out=tfplan
 terraform apply tfplan
@@ -74,6 +74,12 @@ aws configure --profile eks-admin
 ```bash
 aws eks update-kubeconfig --region <YOUR_REGION> --name <YOUR_CLUSTER_NAME> --profile eks-admin
 ```
+or 
+
+```bash
+terraform output kubeconfig_command
+# copy the command and run the displayed command
+```
 
 ### 4. Verify
 ```bash
@@ -81,7 +87,54 @@ kubectl get nodes
 ```
 
 
-## Destroy
+## (X)Destroy
 ```bash
 terraform destroy
+```
+
+
+
+## Public Endpoint Access (Dev/Learning Setup)
+
+ In the project the EKS **public API endpoint** (`endpoint_public_access = true`) is enabled so the cluster can be reached directly from a personal device without needing a bastion host, VPN, or Session Manager setup. This choice was made for learning and experimentation - it lets you run `kubectl` straight from your laptop and quickly setup without the need for setting up private-network access first.
+
+To avoid exposing the endpoint to the entire internet, access is restricted using `public_access_cidrs`, which must be given at apply time.
+
+> **(X) Production note:** This public-access setup is **not** appropriate for production. For production, set `endpoint_public_access = false` and remove eks_public_access_cidrs variable from root and eks module variable.tf and public_access_cidrs from  vpc_config in eks module main.tf, keep only `endpoint_private_access = true`, and access the cluster via a bastion host, VPN, or AWS Systems Manager Session Manager instead. A publicly reachable API endpoint in production environment and should be not allowed.
+
+### How to apply with public access enabled
+
+```bash
+terraform init
+terraform workspace new dev  # only on first run
+terraform workspace select dev
+terraform plan -var='eks_public_access_cidrs=["your.ip.address/32"]' -out=tfplan
+terraform apply tfplan
+```
+### Configure AWS CLI
+```bash
+terraform output eks_admin_access_key_id
+terraform output eks_admin_secret_access_key
+
+aws configure --profile eks-admin
+# Enter the access key ID
+# Enter the secret access key
+# Default region: us-east-1
+# Default output format: json
+```
+
+### Update kubeconfig
+```bash
+aws eks update-kubeconfig --region <YOUR_REGION> --name <YOUR_CLUSTER_NAME> --profile eks-admin
+```
+or 
+
+```bash
+terraform output kubeconfig_command
+# copy the command and run the displayed command
+```
+
+### Verify
+```bash
+kubectl get nodes
 ```

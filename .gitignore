@@ -5,3 +5,4 @@ my_dir
 crash.log
 tfplan
 .terraform.tfvars
+terraform.tfstate.d
