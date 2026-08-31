@@ -3,9 +3,9 @@ resource "aws_security_group" "cluster" {
   description = "Security group for EKS control plane"
   vpc_id      = var.vpc_id
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name = "${var.name_prefix}-cluster-sg"
-  })
+  }
 }
 
 resource "aws_security_group" "node" {
@@ -13,9 +13,9 @@ resource "aws_security_group" "node" {
   description = "Security group for EKS worker nodes"
   vpc_id      = var.vpc_id
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name = "${var.name_prefix}-node-sg"
-  })
+  }
 }
 
 resource "aws_security_group" "alb" {
@@ -23,9 +23,9 @@ resource "aws_security_group" "alb" {
   description = "Security group for Application Load Balancer"
   vpc_id      = var.vpc_id
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name = "${var.name_prefix}-alb-sg"
-  })
+  }
 }
 
 # Cluster SG rules

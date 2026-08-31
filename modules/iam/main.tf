@@ -14,9 +14,9 @@ resource "aws_iam_role" "eks_cluster" {
     ]
   })
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name = "${var.name_prefix}-eks-cluster-role"
-  })
+  }
 }
 
 resource "aws_iam_role" "eks_node" {
@@ -35,7 +35,7 @@ resource "aws_iam_role" "eks_node" {
     ]
   })
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name = "${var.name_prefix}-eks-node-role"
-  })
+  }
 }

@@ -19,9 +19,9 @@ resource "aws_eks_cluster" "main" {
     var.cluster_role_arn,
   ]
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name = var.cluster_name
-  })
+  }
 }
 
 resource "aws_eks_access_entry" "cluster_admin" {

@@ -16,7 +16,7 @@ resource "aws_eks_node_group" "main" {
     max_unavailable = 1
   }
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name = "${var.name_prefix}-node-group"
-  })
+  }
 }

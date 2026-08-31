@@ -2,9 +2,9 @@ resource "aws_eip" "nat" {
   domain     = "vpc"
   depends_on = [aws_internet_gateway.main]
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name = "${var.name_prefix}-nat-eip"
-  })
+  }
 }
 
 resource "aws_nat_gateway" "main" {
@@ -13,7 +13,7 @@ resource "aws_nat_gateway" "main" {
 
   depends_on = [aws_internet_gateway.main]
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name = "${var.name_prefix}-nat"
-  })
+  }
 }

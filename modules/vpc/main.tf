@@ -3,9 +3,9 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name = "${var.name_prefix}-vpc"
-  })
+  }
 }
 
 resource "aws_subnet" "public" {
@@ -16,10 +16,10 @@ resource "aws_subnet" "public" {
 
   map_public_ip_on_launch = true
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name                     = "${var.name_prefix}-public-${var.availability_zones[count.index]}"
     "kubernetes.io/role/elb" = "1"
-  })
+  }
 }
 
 resource "aws_subnet" "private" {
@@ -28,8 +28,8 @@ resource "aws_subnet" "private" {
   cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index + 10)
   availability_zone = var.availability_zones[count.index]
 
-  tags = merge(var.common_tags, {
+  tags = {
     Name                              = "${var.name_prefix}-private-${var.availability_zones[count.index]}"
     "kubernetes.io/role/internal-elb" = "1"
-  })
+  }
 }
