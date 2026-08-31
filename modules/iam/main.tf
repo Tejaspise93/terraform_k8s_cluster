@@ -1,16 +1,3 @@
-resource "aws_iam_user" "eks_admin" {
-  name          = "${var.name_prefix}-eks-admin"
-  force_destroy = true
-
-  tags = merge(var.common_tags, {
-    Name = "${var.name_prefix}-eks-admin"
-  })
-}
-
-resource "aws_iam_access_key" "eks_admin" {
-  user = aws_iam_user.eks_admin.name
-}
-
 resource "aws_iam_role" "eks_cluster" {
   name = "${var.name_prefix}-eks-cluster-role"
 

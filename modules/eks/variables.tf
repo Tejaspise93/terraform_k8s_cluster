@@ -39,9 +39,9 @@ variable "node_instance_type" {
   default     = "t3.micro"
 }
 
-variable "eks_admin_arn" {
+variable "cluster_admin_arn" {
   type        = string
-  description = "ARN of the eks-admin IAM user"
+  description = "ARN of the IAM principal (the one running terraform apply) to map as cluster admin"
 }
 
 variable "name_prefix" {
@@ -52,9 +52,4 @@ variable "name_prefix" {
 variable "common_tags" {
   type        = map(string)
   description = "Common tags applied to all resources"
-}
-
-variable "eks_public_access_cidrs" {
-  type        = list(string)
-  description = "List of CIDR blocks allowed to access the EKS public API server"
 }
