@@ -10,6 +10,11 @@ resource "aws_eks_cluster" "main" {
     endpoint_public_access  = true
   }
 
+  access_config {
+    authentication_mode                         = "API"
+    bootstrap_cluster_creator_admin_permissions = false
+  }
+
   depends_on = [
     var.cluster_role_arn,
   ]
@@ -19,35 +24,18 @@ resource "aws_eks_cluster" "main" {
   })
 }
 
-resource "time_sleep" "wait_for_aws_auth" {
-  depends_on      = [aws_eks_node_group.main]
-  create_duration = "30s"
+resource "aws_eks_access_entry" "cluster_admin" {
+  cluster_name  = aws_eks_cluster.main.name
+  principal_arn = var.cluster_admin_arn
+  type          = "STANDARD"
 }
 
-resource "kubernetes_config_map_v1_data" "aws_auth" {
-  metadata {
-    name      = "aws-auth"
-    namespace = "kube-system"
+resource "aws_eks_access_policy_association" "cluster_admin" {
+  cluster_name  = aws_eks_cluster.main.name
+  principal_arn = var.cluster_admin_arn
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+
+  access_scope {
+    type = "cluster"
   }
-
-  data = {
-    mapRoles = yamlencode([
-      {
-        rolearn  = var.node_role_arn
-        username = "system:node:{{EC2PrivateDNSName}}"
-        groups   = ["system:bootstrappers", "system:nodes"]
-      }
-    ])
-    mapUsers = yamlencode([
-      {
-        userarn  = var.cluster_admin_arn
-        username = "cluster-admin"
-        groups   = ["system:masters"]
-      }
-    ])
-  }
-
-  force = true
-
-  depends_on = [time_sleep.wait_for_aws_auth]
 }
