@@ -17,3 +17,8 @@ variable "common_tags" {
   type        = map(string)
   description = "Common tags applied to all resources"
 }
+
+variable "vpc_cidr" {
+  type        = string
+  description = "CIDR block for the VPC, used to scope internal-only ingress rules"
+}

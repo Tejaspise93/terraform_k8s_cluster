@@ -15,9 +15,6 @@ resource "aws_eks_cluster" "main" {
     bootstrap_cluster_creator_admin_permissions = false
   }
 
-  depends_on = [
-    var.cluster_role_arn,
-  ]
 
   tags = {
     Name = var.cluster_name

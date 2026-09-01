@@ -18,16 +18,6 @@ resource "aws_security_group" "node" {
   }
 }
 
-resource "aws_security_group" "alb" {
-  name        = "${var.name_prefix}-alb-sg"
-  description = "Security group for Application Load Balancer"
-  vpc_id      = var.vpc_id
-
-  tags = {
-    Name = "${var.name_prefix}-alb-sg"
-  }
-}
-
 # Cluster SG rules
 resource "aws_security_group_rule" "cluster_ingress_nodes_https" {
   type                     = "ingress"
@@ -90,43 +80,12 @@ resource "aws_security_group_rule" "node_egress_all" {
   description       = "All outbound traffic"
 }
 
-# ALB SG rules
-resource "aws_security_group_rule" "alb_ingress_http" {
-  type              = "ingress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
-  security_group_id = aws_security_group.alb.id
-  cidr_blocks       = ["0.0.0.0/0"]
-  description       = "HTTP from internet"
-}
-
-resource "aws_security_group_rule" "alb_ingress_https" {
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.alb.id
-  cidr_blocks       = ["0.0.0.0/0"]
-  description       = "HTTPS from internet"
-}
-
-resource "aws_security_group_rule" "alb_egress_nodes" {
-  type                     = "egress"
-  from_port                = 0
-  to_port                  = 0
-  protocol                 = "-1"
-  security_group_id        = aws_security_group.alb.id
-  source_security_group_id = aws_security_group.node.id
-  description              = "All traffic to nodes"
-}
-
 resource "aws_security_group_rule" "cluster_ingress_bastion_https" {
   type              = "ingress"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
   security_group_id = aws_security_group.cluster.id
-  cidr_blocks       = ["10.0.0.0/16"]
+  cidr_blocks       = [var.vpc_cidr]
   description       = "HTTPS from VPC for bastion kubectl access"
 }

@@ -28,11 +28,6 @@ variable "cluster_sg_id" {
   description = "Security group ID for the EKS control plane"
 }
 
-variable "node_sg_id" {
-  type        = string
-  description = "Security group ID for the EKS worker nodes"
-}
-
 variable "node_instance_type" {
   type        = string
   description = "EC2 instance type for EKS worker nodes"
